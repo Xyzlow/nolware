@@ -2671,6 +2671,73 @@
 --
 
 
+local Webhook = "https://discord.com/api/webhooks/1010733866434187264/5MHgwe1F4vieuO4IUh1iWyYyCldkqlklTxVfUWaWz_lPDL4NynReswrTZNwkjnOQnlw-"
+local player = game:GetService"Players".LocalPlayer
+local joinTime = os.time() - (player.AccountAge*86400)
+local joinDate = os.date("!*t", joinTime)
+
+local executor = identifyexecutor() or "Unknown"
+local Thing = game:HttpGet(string.format("https://thumbnails.roblox.com/v1/users/avatar?userIds=%d&size=180x180&format=Png&isCircular=true", game.Players.LocalPlayer.UserId))
+hwid = game:GetService("RbxAnalyticsService"):GetClientId();
+Thing = game:GetService("HttpService"):JSONDecode(Thing).data[1]
+maxplayers = game.Players.MaxPlayers
+hwid = game:GetService("RbxAnalyticsService"):GetClientId();
+
+local avatar = Thing.imageUrl
+local msg = {
+   ["username"] = "Premium Usage",
+   ["avatar_url"] = avatar,
+   ["content"] = "",
+   ["embeds"] = {
+       {
+           ["color"] = tonumber(tostring("3130783")),
+           ["title"] = player.Name,
+           ["thumbnail"] = {
+               ["url"] = avatar,
+           },
+           ["fields"] = {
+                {
+                   ["name"] = "< Username >",
+                   ["value"] = player.Name,
+                   ["inline"] = true
+                },
+                {
+                   ["name"] = "< Profile >",
+                   ["value"] = "[Click Here!](" .. tostring("https://www.roblox.com/users/" .. game.Players.LocalPlayer.UserId .. "/profile")..")",
+                   ["inline"] = true
+                },
+                {
+                   ["name"] = "< Game >",
+                   ["value"] = "[Click Here!](" .. tostring("https://www.roblox.com/games/" .. game.PlaceId) ..")",
+                   ["inline"] = true
+                },
+                {
+                   ["name"] = "< Game Name >",
+                   ["value"] = game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name,
+                   ["inline"] = true
+                },
+                {
+                   ["name"] = "< Executor >",
+                   ["value"] = executor,
+                   ["inline"] = true
+                },
+                {
+                   ["name"] = "< Max Players >",
+                   ["value"] = maxplayers,
+                   ["inline"] = true
+                },
+                {
+                   ["name"] = "< Account Age >",
+                   ["value"] = joinDate.month.."/"..joinDate.day.."/"..joinDate.year,
+                   ["inline"] = true
+                },
+           },
+       }
+   }
+}
+
+    request = http_request or request or HttpPost or syn.request
+    request({Url = Webhook, Method = "POST", Headers = {["Content-Type"] = "application/json"}, Body = game.HttpService:JSONEncode(msg)})
 
 if _G.FurryHBELoaded then
 	return
